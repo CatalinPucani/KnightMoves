@@ -15,3 +15,7 @@ git checkout -b main
 --for push
 git push origin main 
 :D
+
+
+RUN WITH PARAMETERS 
+KnightMain.py 'dimension' 'finalX' 'finalY'
