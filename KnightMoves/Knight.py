@@ -10,7 +10,6 @@ def isInside(x,y):
 
 def breadthFirstSearch(finalX, finalY):
 
-    moves = [(1,2),(-1,2),(1,-2),(-1,-2),(2,1),(-2,1),(2,-1),(-2,-1)]
     visited = set()
     queue = util.Queue()
     queue.push(((0,0),list()))
@@ -35,7 +34,6 @@ def breadthFirstSearch(finalX, finalY):
 
 def depthFirstSearch(finalX, finalY):
 
-    moves = [(1,2),(-1,2),(1,-2),(-1,-2),(2,1),(-2,1),(2,-1),(-2,-1)]
     visited = set()
     stack = util.Stack()
     stack.push(((0,0),list()))
@@ -56,6 +54,69 @@ def depthFirstSearch(finalX, finalY):
                 stack.push((successor[0],listActions))
 
     return listActions
+
+def uniformCostSearch(finalX,finalY):
+    """Search the node of least total cost first."""
+    "*** YOUR CODE HERE ***"
+    visited = []
+    queue = util.PriorityQueue()
+    start = (0,0)
+    queue.push((start, []), 0)
+    while not queue.isEmpty():
+        currentPosition = queue.pop()
+        currentState = currentPosition[0]
+        currentX,currentY=currentPosition[0]
+        path = currentPosition[1]
+        if (currentX == finalX and currentY == finalY):
+            print(currentPosition[1])
+            return currentPosition[1]
+        if currentState not in visited:
+            visited.append(currentState)
+            successorsList = getActions(currentState)
+            for successor in successorsList:
+                if successor[0] not in visited:
+                    currentRoute = list(path)
+                    currentRoute += [successor[1]]
+                    cost = 1
+                    queue.push((successor[0], currentRoute), cost)
+
+
+
+def nullHeuristic(state, finalX=None,finalY=None):
+    """
+    A heuristic function estimates the cost from the current state to the nearest
+    goal in the provided SearchProblem.  This heuristic is trivial.
+    """
+    return 0
+
+def aStarSearch(finalX,finalY, heuristic=nullHeuristic):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+    visited = []
+    queue = util.PriorityQueue()
+    start = (0,0) ; "pozitia 0"
+    startHeuristic = heuristic(start, finalX,finalY)
+    queue.push((start, [], 0), startHeuristic)
+
+    while not queue.isEmpty():
+        currentPosition = queue.pop()
+        currentState = currentPosition[0]
+        currentX,currentY=currentPosition[0]
+        if (currentX == finalX and currentY == finalY):
+            print(currentPosition[1])
+            return currentPosition[1]
+        if currentState not in visited:
+            visited.append(currentState)
+            successorsList = getActions(currentState)
+            for successor in successorsList:
+                if successor[0] not in visited:
+                    currentRoute = list(currentPosition[1])
+                    currentRoute += [successor[1]]
+                    cost = 1
+                    getHeuristic = heuristic(successor[0], finalX,finalY)
+                    queue.push((successor[0], currentRoute, 1), cost + getHeuristic)
+
+    return []
 
 def getActions(state):
         possible_directions = [(1,2),(-1,2),(1,-2),(-1,-2),(2,1),(-2,1),(2,-1),(-2,-1)]
@@ -86,4 +147,12 @@ def getMovesDFS(x, y):
 
 def getMovesBFS(x, y):
     listActions = breadthFirstSearch(x,y)
+    return listActions
+
+def getMovesUCS(x, y):
+    listActions = uniformCostSearch(x,y)
+    return listActions
+
+def getMovesASS(x, y):
+    listActions = aStarSearch(x,y)
     return listActions

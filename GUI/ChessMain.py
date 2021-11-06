@@ -49,7 +49,7 @@ def main():
     currentX = 0
     currentY = 0
 
-    listActions = Knight.getMovesDFS(7, 6)
+    listActions = Knight.getMovesASS(7, 6)
 
     while running:
 
