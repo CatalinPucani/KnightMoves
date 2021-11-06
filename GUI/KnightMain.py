@@ -6,7 +6,7 @@ import KnightEngine
 from KnightMoves import Knight
 import sys
 
-BOARD_WIDTH = BOARD_HEIGHT = 680
+BOARD_WIDTH = BOARD_HEIGHT = 720
 
 DIMENSION8 = 8
 DIMENSION12 = 12
@@ -32,6 +32,7 @@ def main(dimension, posX, posY,algType):
     """
 
     p.init()
+    p.display.set_caption('KnightMoves')
     screen = p.display.set_mode((BOARD_WIDTH, BOARD_HEIGHT))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
