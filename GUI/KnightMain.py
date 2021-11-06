@@ -25,7 +25,7 @@ def loadImage(square_size):
     IMAGES[piece] = p.transform.scale(p.image.load("images/" + piece + ".png"), (square_size, square_size))
 
 
-def main(dimension, posX, posY):
+def main(dimension, posX, posY,algType):
     """
     The main driver for our code.
     This will handle user input and updating the graphics.
@@ -43,7 +43,14 @@ def main(dimension, posX, posY):
     currentX = 0
     currentY = 0
     board = [[]]
-    listActions = Knight.getMovesUCS(posX, posY, dimension)
+    if algType == "bfs":
+        listActions = Knight.getMovesBFS(posX, posY, dimension)
+    elif algType == "dfs":
+        listActions = Knight.getMovesDFS(posX, posY, dimension)
+    elif algType == "ass":
+        listActions = Knight.getMovesASS(posX, posY, dimension)
+    elif algType == "ucs":
+        listActions = Knight.getMovesUCS(posX, posY, dimension)
 
     if dimension == 16:
         board = game_state.board16
@@ -136,4 +143,5 @@ if __name__ == "__main__":
     dimension = int(sys.argv[1])
     x = int(sys.argv[2])
     y = int(sys.argv[3])
-    main(dimension, x, y)
+    algType = sys.argv[4]
+    main(dimension, x, y,algType)

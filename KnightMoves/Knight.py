@@ -16,7 +16,7 @@ def breadthFirstSearch(finalX, finalY, boardSize):
     listActions = []
     while not queue.isEmpty():
         currentPos = queue.pop()
-        print(currentPos)
+
         currentX, currentY = currentPos[0]
         if currentX == finalX and currentY == finalY:
             print(currentPos[1])
@@ -96,7 +96,7 @@ def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
     visited = []
     queue = util.PriorityQueue()
     start = (0, 0);
-    "pozitia 0"
+
     startHeuristic = heuristic(start, finalX, finalY)
     queue.push((start, [], 0), startHeuristic)
 
