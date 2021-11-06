@@ -19,7 +19,7 @@ def breadthFirstSearch(finalX, finalY, boardSize):
 
         currentX, currentY = currentPos[0]
         if currentX == finalX and currentY == finalY:
-            print(currentPos[1])
+            print("The list of actions is: ", currentPos[1])
             return currentPos[1]
         else:
             successors = getActions(currentPos[0], boardSize)
@@ -42,7 +42,7 @@ def depthFirstSearch(finalX, finalY, boardSize):
         currentPos = stack.pop()
         currentX, currentY = currentPos[0]
         if currentX == finalX and currentY == finalY:
-            print(currentPos[1])
+            print("The list of actions is: ", currentPos[1])
             return currentPos[1]
         else:
             successors = getActions(currentPos[0], boardSize)
@@ -62,14 +62,14 @@ def uniformCostSearch(finalX, finalY, boardSize):
     visited = []
     queue = util.PriorityQueue()
     start = (0, 0)
-    queue.push((start, []), 0)
+    queue.push((start, [],0), 0)
     while not queue.isEmpty():
         currentPosition = queue.pop()
         currentState = currentPosition[0]
         currentX, currentY = currentPosition[0]
         path = currentPosition[1]
         if currentX == finalX and currentY == finalY:
-            print(currentPosition[1])
+            print("The list of actions is: ",currentPosition[1],"\nThe cost is",currentPosition[2])
             return currentPosition[1]
         if currentState not in visited:
             visited.append(currentState)
@@ -78,17 +78,28 @@ def uniformCostSearch(finalX, finalY, boardSize):
                 if successor[0] not in visited:
                     currentRoute = list(path)
                     currentRoute += [successor[1]]
-                    cost = 1
-                    queue.push((successor[0], currentRoute), cost)
+                    cost = currentPosition[2]
+                    queue.push((successor[0], currentRoute, cost + 1), cost + 1)
 
 
-def nullHeuristic(state, finalX=None, finalY=None):
+def nullHeuristic(state, finalX, finalY):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
-    return 0
-
+    currentX, currentY = state
+    auxX = currentX % 2
+    auxY = currentY % 2
+    aux2X = finalX % 2
+    aux2Y = finalY % 2
+    if auxX == aux2X and auxY == aux2Y:
+        return 2
+    elif auxX == aux2X and auxY != aux2Y:
+        return 1
+    elif auxX != aux2X and auxY == aux2Y:
+        return 1
+    elif auxX != aux2X and auxY != aux2Y:
+        return 2
 
 def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
@@ -98,14 +109,14 @@ def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
     start = (0, 0);
 
     startHeuristic = heuristic(start, finalX, finalY)
-    queue.push((start, [], 0), startHeuristic)
+    queue.push((start, [], startHeuristic),startHeuristic)
 
     while not queue.isEmpty():
         currentPosition = queue.pop()
         currentState = currentPosition[0]
         currentX, currentY = currentPosition[0]
         if currentX == finalX and currentY == finalY:
-            print(currentPosition[1])
+            print("The list of actions is: ",currentPosition[1],"\nThe cost is",currentPosition[2])
             return currentPosition[1]
         if currentState not in visited:
             visited.append(currentState)
@@ -114,9 +125,9 @@ def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
                 if successor[0] not in visited:
                     currentRoute = list(currentPosition[1])
                     currentRoute += [successor[1]]
-                    cost = 1
+                    cost = currentPosition[2]
                     getHeuristic = heuristic(successor[0], finalX, finalY)
-                    queue.push((successor[0], currentRoute, 1), cost + getHeuristic)
+                    queue.push((successor[0], currentRoute,  cost + getHeuristic),cost + getHeuristic)
 
     return []
 
