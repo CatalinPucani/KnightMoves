@@ -1,7 +1,6 @@
 from GUI import KnightEngine
 from KnightMoves import util
 
-
 def isInside(x, y, boardSize):
     if x < 0 or x > boardSize - 1 or y < 0 or y > boardSize - 1:
         return False
@@ -82,7 +81,7 @@ def uniformCostSearch(finalX, finalY, boardSize):
                     queue.push((successor[0], currentRoute, cost + 1), cost + 1)
 
 
-def nullHeuristic(state, finalX, finalY):
+def matchingColors(state, finalX, finalY):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
@@ -101,7 +100,41 @@ def nullHeuristic(state, finalX, finalY):
     elif auxX != aux2X and auxY != aux2Y:
         return 2
 
-def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
+def manhattanDistance(state, finalX, finalY):
+    currentX, currentY = state
+    return (abs(currentX - finalX) + abs(currentY - finalY)) / 3
+
+def aStarSearchMC(finalX, finalY, boardSize, heuristic=matchingColors):
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+    visited = []
+    queue = util.PriorityQueue()
+    start = (0, 0);
+
+    startHeuristic = heuristic(start, finalX, finalY)
+    queue.push((start, [], startHeuristic),startHeuristic)
+
+    while not queue.isEmpty():
+        currentPosition = queue.pop()
+        currentState = currentPosition[0]
+        currentX, currentY = currentPosition[0]
+        if currentX == finalX and currentY == finalY:
+            print("The list of actions is: ",currentPosition[1],"\nThe cost is",currentPosition[2])
+            return currentPosition[1]
+        if currentState not in visited:
+            visited.append(currentState)
+            successorsList = getActions(currentState, boardSize)
+            for successor in successorsList:
+                if successor[0] not in visited:
+                    currentRoute = list(currentPosition[1])
+                    currentRoute += [successor[1]]
+                    cost = currentPosition[2]
+                    getHeuristic = heuristic(successor[0], finalX, finalY)
+                    queue.push((successor[0], currentRoute,  cost + getHeuristic),cost + getHeuristic)
+
+    return []
+
+def aStarSearchMD(finalX, finalY, boardSize, heuristic=manhattanDistance):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     visited = []
@@ -132,6 +165,7 @@ def aStarSearch(finalX, finalY, boardSize, heuristic=nullHeuristic):
     return []
 
 
+
 def getActions(state, boardSize):
     possible_directions = [(1, 2), (-1, 2), (1, -2), (-1, -2), (2, 1), (-2, 1), (2, -1), (-2, -1)]
     valid_actions_from_state = []
@@ -159,19 +193,28 @@ def passMovesToGUI():
 
 def getMovesDFS(x, y, boardSize):
     listActions = depthFirstSearch(x, y, boardSize)
+    print('Numar noduri expandate:', len(listActions))
     return listActions
 
 
 def getMovesBFS(x, y, boardSize):
     listActions = breadthFirstSearch(x, y, boardSize)
+    print('Numar noduri expandate:', len(listActions))
     return listActions
 
 
 def getMovesUCS(x, y, boardSize):
     listActions = uniformCostSearch(x, y, boardSize)
+    print('Numar noduri expandate:', len(listActions))
     return listActions
 
 
-def getMovesASS(x, y, boardSize):
-    listActions = aStarSearch(x, y, boardSize)
+def getMovesASSMC(x, y, boardSize):
+    listActions = aStarSearchMC(x, y, boardSize)
+    print('Numar noduri expandate:', len(listActions))
+    return listActions
+
+def getMovesASSMD(x, y, boardSize):
+    listActions = aStarSearchMD(x, y, boardSize)
+    print('Numar noduri expandate:', len(listActions))
     return listActions

@@ -48,8 +48,10 @@ def main(dimension, posX, posY,algType):
         listActions = Knight.getMovesBFS(posX, posY, dimension)
     elif algType == "dfs":
         listActions = Knight.getMovesDFS(posX, posY, dimension)
-    elif algType == "ass":
-        listActions = Knight.getMovesASS(posX, posY, dimension)
+    elif algType == "assmc":
+        listActions = Knight.getMovesASSMC(posX, posY, dimension)
+    elif algType == "assmd":
+        listActions = Knight.getMovesASSMD(posX, posY, dimension)
     elif algType == "ucs":
         listActions = Knight.getMovesUCS(posX, posY, dimension)
 
