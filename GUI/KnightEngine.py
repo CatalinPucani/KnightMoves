@@ -48,6 +48,13 @@ class GameState:
         ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
         ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"]]
 
+    board32 = [[0 for x in range(32)] for y in range(32)]
+    for i in range(32):
+        for j in range(32):
+            board32[i][j] = "--"
+
+    board32[0][0] = "bN"
+
     def __init__(self):
         """
         Board is a 2d list, each element in list has 2 characters.

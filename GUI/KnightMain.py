@@ -6,11 +6,12 @@ import KnightEngine
 from KnightMoves import Knight
 import sys
 
-BOARD_WIDTH = BOARD_HEIGHT = 720
+BOARD_WIDTH = BOARD_HEIGHT = 768
 
 DIMENSION8 = 8
 DIMENSION12 = 12
 DIMENSION16 = 16
+DIMENSION32 = 32
 
 MAX_FPS = 15
 IMAGES = {}
@@ -55,6 +56,8 @@ def main(dimension, posX, posY,algType):
     elif algType == "ucs":
         listActions = Knight.getMovesUCS(posX, posY, dimension)
 
+    if dimension == 32:
+        board = game_state.board32
     if dimension == 16:
         board = game_state.board16
     elif dimension == 12:
@@ -102,6 +105,9 @@ def actionsForTable(listActions, currentX, currentY, game_state, screen, clock, 
     elif dimension == 16:
         board = game_state.board16
         square_size = BOARD_HEIGHT // DIMENSION16
+    elif dimension == 32:
+        board = game_state.board32
+        square_size = BOARD_HEIGHT // DIMENSION32
 
     for action in listActions:
         move = KnightEngine.Move((currentX, currentY), (currentX + action[0], currentY + action[1]),
