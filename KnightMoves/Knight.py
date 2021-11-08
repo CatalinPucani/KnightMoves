@@ -1,6 +1,7 @@
 from GUI import KnightEngine
 from KnightMoves import util
 
+
 def isInside(x, y, boardSize):
     if x < 0 or x > boardSize - 1 or y < 0 or y > boardSize - 1:
         return False
@@ -11,6 +12,7 @@ def isInside(x, y, boardSize):
 def breadthFirstSearch(finalX, finalY, boardSize):
     visited = set()
     queue = util.Queue()
+    duplicates = []
     queue.push(((0, 0), list()))
     listActions = []
     while not queue.isEmpty():
@@ -24,10 +26,11 @@ def breadthFirstSearch(finalX, finalY, boardSize):
             successors = getActions(currentPos[0], boardSize)
             visited.add(currentPos[0])
             for successor in successors:
-                if successor[0] not in visited:
+                if successor[0] not in visited and successor[0] not in duplicates:
                     listActions = list(currentPos[1])
                     listActions.append(successor[1])
                     queue.push((successor[0], listActions))
+                    duplicates.append(successor[0])
 
     return listActions
 
@@ -74,7 +77,7 @@ def uniformCostSearch(finalX, finalY, boardSize):
             visited.append(currentState)
             successorsList = getActions(currentState, boardSize)
             for successor in successorsList:
-                if successor[0] not in visited:
+                if successor[0] not in visited and successor[0] not in [nod[0] for nod in queue.heap]:
                     currentRoute = list(path)
                     currentRoute += [successor[1]]
                     cost = currentPosition[2]
@@ -125,7 +128,7 @@ def aStarSearchMC(finalX, finalY, boardSize, heuristic=matchingColors):
             visited.append(currentState)
             successorsList = getActions(currentState, boardSize)
             for successor in successorsList:
-                if successor[0] not in visited:
+                if successor[0] not in visited and successor[0] not in [nod[0] for nod in queue.heap]:
                     currentRoute = list(currentPosition[1])
                     currentRoute += [successor[1]]
                     cost = currentPosition[2]
@@ -155,7 +158,7 @@ def aStarSearchMD(finalX, finalY, boardSize, heuristic=manhattanDistance):
             visited.append(currentState)
             successorsList = getActions(currentState, boardSize)
             for successor in successorsList:
-                if successor[0] not in visited:
+                if successor[0] not in visited and successor[0] not in [nod[0] for nod in queue.heap]:
                     currentRoute = list(currentPosition[1])
                     currentRoute += [successor[1]]
                     cost = currentPosition[2]

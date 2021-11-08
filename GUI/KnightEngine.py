@@ -48,12 +48,12 @@ class GameState:
         ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"],
         ["--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--"]]
 
-    board32 = [[0 for x in range(32)] for y in range(32)]
-    for i in range(32):
-        for j in range(32):
-            board32[i][j] = "--"
+    board20 = [[0 for x in range(20)] for y in range(20)]
+    for i in range(20):
+        for j in range(20):
+            board20[i][j] = "--"
 
-    board32[0][0] = "bN"
+    board20[0][0] = "bN"
 
     def __init__(self):
         """
