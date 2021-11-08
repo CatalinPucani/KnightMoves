@@ -22,3 +22,7 @@ KnightMain.py  -p 'dimension' 'finalX' 'finalY' 'algtype'
 algtype= bfs, dfs, ass, ucs
 dimension = 8, 12 16
 finalx, finaly constrained by dimension (inside area)
+
+----git pull override
+git reset --hard HEAD
+git pull
